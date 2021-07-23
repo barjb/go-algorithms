@@ -7,60 +7,78 @@ type Node struct {
 	Next  *Node
 }
 
-func InsertNode(t *Node, v int) int {
-	if t == nil {
-		fmt.Println("in nil")
-		t = &Node{v, nil}
-		fmt.Printf("%d -> %d\n", t.Value,t.Next)
-		return 0
-	}
-	if t.Next == nil {
-		t.Next = &Node{v, nil}
-		return 1
-	}
-	return InsertNode(t.Next, v)
+type LinkedList struct{
+	Root *Node
+	Middle *Node
+	Length int
 }
 
-func traverse(t *Node) {
-	if t == nil {
+func (l *LinkedList) Insert(n *Node, v int) int{
+	if l.Root == nil{
+		l.Root = &Node{v,nil}
+		l.Length = 1
+		return 0
+	}
+	if n.Value == v{
+		fmt.Printf("Node with value %d exists\n",v)
+		return -1
+	}
+	if n.Next == nil{
+		n.Next = &Node{v,nil}
+		l.Length++
+		return 1
+	}
+	return l.Insert(n.Next,v)
+}
+
+func (l LinkedList) Traverse(n *Node){
+	if n == nil {
 		fmt.Println("List is empty")
 		return
 	}
-	for ;t != nil; {
-		fmt.Printf("%d -> ", t.Value)
-		t = t.Next
+	for n != nil {
+		fmt.Printf("%d -> ", n.Value)
+		n = n.Next
 	}
 	fmt.Println()
 }
 
-func Exists(t *Node, v int) bool {
-	if t.Value == v{
+func (l *LinkedList) Exists(n *Node,v int) bool{
+	if n.Value == v{
 		return true
 	}
-	if t.Next == nil {
+	if n.Next == nil{
 		return false
 	}
-	return Exists(t.Next, v)
+	return l.Exists(n.Next,v)
 }
 
-func Size(t *Node) int {
-	if t == nil {
+func (l LinkedList) Size() int {
+	if l.Root == nil {
 		fmt.Println("List is empty")
 		return 0
 	}
 	var i = 0
-	for ;t != nil; {
-		t = t.Next
+	for l.Root != nil {
+		l.Root = l.Root.Next
 		i++
 	}
 	return i
 }
 func main() {
-	root := &Node{Value:1, Next: nil}
-	InsertNode(root, -11)
-	InsertNode(root, 2)
-	fmt.Println(Exists(root,2))
-	fmt.Println(Exists(root,10))
-	fmt.Println(Size(root))
-	traverse(root)
+	list := new(LinkedList)
+	list.Insert(list.Root,10)
+	list.Insert(list.Root,20)
+	list.Insert(list.Root,30)
+	list.Insert(list.Root,40)
+	list.Insert(list.Root,15)
+	list.Insert(list.Root,11)
+
+	list.Traverse(list.Root)
+	
+	fmt.Println(list.Exists(list.Root,10))
+	fmt.Println(list.Exists(list.Root,11))
+	fmt.Println(list.Exists(list.Root,12))
+
+	fmt.Println(list.Size())
 }
