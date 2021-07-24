@@ -55,10 +55,9 @@ func (q Queue) Traverse(){
 		fmt.Println("Empty queue")
 		return
 	}
-	temp := q.queue
-	for temp != nil{
-		fmt.Printf("%d -> ",temp.Value)
-		temp = temp.Next
+	for q.queue != nil{
+		fmt.Printf("%d -> ",q.queue.Value)
+		q.queue = q.queue.Next
 	}
 	fmt.Println()
 }
